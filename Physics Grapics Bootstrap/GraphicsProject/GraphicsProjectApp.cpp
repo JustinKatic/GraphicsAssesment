@@ -91,8 +91,9 @@ void GraphicsProjectApp::update(float deltaTime) {
 
 
 	//Change light direction over time
-	// float time = getTime();
-	// m_light.direction = glm::normalize(glm::vec3(glm::cos(time * 2), glm::sin(time * 2), 0));
+	 float time = getTime();
+	 m_light.direction = glm::normalize(glm::vec3(glm::cos(time * 2), glm::sin(time * 2), 0));
+
 
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -291,18 +292,18 @@ bool GraphicsProjectApp::LoadShaderAndMeshLogic()
 #pragma endregion
 //
 #pragma region SoulSpear
-//	if (m_soulSpearMesh.load("./soulspear/soulspear.obj", true, true) == false)
-//	{
-//		printf("Soulspear Mesh has had an error!\n");
-//		return false;
-//	}
-//	m_soulSpearTransform = {
-//	1.0f,	0,		0,		0,
-//	0,		1.0f,	0,		0,
-//	0,		0,		1.0f,	0,
-//	0,		0,		0,		1
-//	};
-//
+	if (m_soulSpearMesh.load("./soulspear/soulspear.obj", true, true) == false)
+	{
+		printf("Soulspear Mesh has had an error!\n");
+		return false;
+	}
+	m_soulSpearTransform = {
+	1.0f,	0,		0,		0,
+	0,		1.0f,	0,		0,
+	0,		0,		1.0f,	0,
+	0,		0,		0,		1
+	};
+
 #pragma endregion
 
 #pragma region Colt
@@ -418,9 +419,11 @@ void GraphicsProjectApp::DrawShaderAndMeshes(glm::mat4 a_projectionMatrix, glm::
 	pvm = a_projectionMatrix * a_viewMatrix * m_soulSpearTransform;
 	m_normalMapShader.bindUniform("ProjectionViewModel", pvm);
 	m_normalMapShader.bindUniform("CameraPosition", m_camera[m_currentCam].GetPosition());
-	m_normalMapShader.bindUniform("AmbientColor",m_ambientLight);
-	m_normalMapShader.bindUniform("LightColor",m_light.color);
-	m_normalMapShader.bindUniform("LightDirection",m_light.direction);
+	m_normalMapShader.bindUniform("AmbientColor", m_ambientLight);
+	m_normalMapShader.bindUniform("LightColor", m_light.color);
+	m_normalMapShader.bindUniform("LightDirection", m_light.direction);
+	m_normalMapShader.bindUniform("LightColor1", m_light1.color);
+	m_normalMapShader.bindUniform("LightDirection1", m_light1.direction);
 	m_normalMapShader.bindUniform("ModelMatrix", m_soulSpearTransform);
 
 	//Draw the mesh
@@ -454,27 +457,17 @@ void GraphicsProjectApp::DrawShaderAndMeshes(glm::mat4 a_projectionMatrix, glm::
 void GraphicsProjectApp::IMGUI_Logic()
 {
 	ImGui::Begin("Scene Light Settings");
-	ImGui::DragFloat3("Sunlight Direction", &m_light.direction[0], 0.1f, -10.0f, 10.0f);
+	ImGui::DragFloat3("Sunlight Direction", &m_light.direction[0], 0.1f, -20.0f, 20.0f);
 	ImGui::DragFloat3("Sunlight Color", &m_light.color[0], 0.1f, 0.0f, 2.0f);
 	ImGui::End();
 
 	ImGui::Begin("Scene Light1 Settings");
-	ImGui::DragFloat3("Sunlight Direction", &m_light1.direction[0], 0.1f, -10.0f, 10.0f);
+	ImGui::DragFloat3("Sunlight Direction", &m_light1.direction[0], 0.1f, -20.0f, 20.0f);
 	ImGui::DragFloat3("Sunlight Color", &m_light1.color[0], 0.1f, 0.0f, 2.0f);
 	ImGui::End();
 
-	//ImGui::Begin("Translate Settings");
-	//ImGui::DragFloat3("BunnyPosition", &m_bunnyPosition[0], 0.01, -1.0f, 1.0f);
-	//ImGui::DragFloat3("DragonPosition", &m_dragonPosition[0], 0.01, -1.0f, 1.0f);
-	//ImGui::DragFloat3("LucyPosition", &m_lucyPosition[0], 0.01, -1.0f, 1.0f);
-	//ImGui::DragFloat3("BuddhaPosition", &m_buddhaPosition[0], 0.01, -1.0f, 1.0f);
-	//ImGui::End();
-
 	ImGui::Begin("Position Settings");
-	//ImGui::DragFloat3("BunnyPosition", &m_bunnyTransform[3][0], 0.01, -20.0f, 20.0f);
-	//ImGui::DragFloat3("DragonPosition", &m_dragonTransform[3][0], 0.01, -20.0f, 20.0f);
-	//ImGui::DragFloat3("LucyPosition", &m_lucyTransform[3][0], 0.01, -20.0f, 20.0f);
-	//ImGui::DragFloat3("BuddhaPosition", &m_buddhaTransform[3][0], 0.01, -20.0f, 20.0f);
+	ImGui::DragFloat3("SoulSpear", &m_soulSpearTransform[3][0], 0.01, -20.0f, 20.0f);
 	ImGui::DragFloat3("ColtPosition", &m_coltTransform[3][0], 0.01, -20.0f, 20.0f);
 
 	ImGui::End();
