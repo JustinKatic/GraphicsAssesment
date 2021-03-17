@@ -1,0 +1,35 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v3.1.206520482)
+
+newmtl gun
+illum 2
+
+Ka 0.051 0.051 0.051
+Kd 0.051 0.051 0.051
+Ks 0.873 0.873 0.873
+
+map_Kd colt-ld_gun_BaseColor.tga
+map_Ks colt-ld_gun_OcclusionRoughnessMetallic.tga
+bump colt-ld_gun_Normal.tga
+
+newmtl wire_145028177
+illum 2
+Ka 0.5686 0.1098 0.6941
+Kd 0.5686 0.1098 0.6941
+Ks 0.35 0.35 0.35
+
+map_Kd colt-ld_wood_BaseColor.tga
+map_Ks colt-ld_wood_OcclusionRoughnessMetallic.tga
+bump colt-ld_wood_Normal.tga
+
+newmtl brass
+illum 2
+Ka 0.5686 0.1098 0.6941
+Kd 0.5686 0.1098 0.6941
+Ks 0.35 0.35 0.35
+
+map_Kd colt-ld_brass_BaseColor.tga
+map_Ks colt-ld_brass_OcclusionRoughnessMetallic.tga
+bump colt-ld_brass_Normal.tga
+
+
