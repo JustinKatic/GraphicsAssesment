@@ -7,7 +7,7 @@ illum 2
 Ka 1.000 0.000 0.000
 Kd 0.051 0.051 0.051
 Ks 0.873 0.873 0.873
-Ns 20.000000
+Ns 10.000000
 
 map_Kd colt-ld_gun_BaseColor.tga
 map_Ks colt-ld_gun_OcclusionRoughnessMetallic.tga
@@ -18,7 +18,7 @@ illum 2
 Ka 0.0000 1.0000 0.0000
 Kd 0.5686 0.1098 0.6941
 Ks 0.35 0.35 0.35
-Ns 20.000000
+Ns 10.000000
 
 map_Kd colt-ld_wood_BaseColor.tga
 map_Ks colt-ld_wood_OcclusionRoughnessMetallic.tga
@@ -29,7 +29,7 @@ illum 2
 Ka 0.0000 0.0000 1.0000
 Kd 0.5686 0.1098 0.6941
 Ks 0.35 0.35 0.35
-Ns 20.000000
+Ns 1.000000
 
 map_Kd colt-ld_brass_BaseColor.tga
 map_Ks colt-ld_brass_OcclusionRoughnessMetallic.tga
