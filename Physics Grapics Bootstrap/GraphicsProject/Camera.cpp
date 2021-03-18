@@ -2,15 +2,15 @@
 #include <glm/ext.hpp>
 #include <Input.h>
 
-Camera::Camera()
+Camera::Camera(glm::vec3 a_camPos)
 {
-	m_position = glm::vec3(-10, 2, 0);
+	m_position = a_camPos;
 	m_phi = 0;
 	m_theta = 0;
 }
 
 void Camera::Update(float a_deltaTime)
-{
+{	
 	aie::Input* input = aie::Input::getInstance();
 	float thetaR = glm::radians(m_theta);
 	float phiR = glm::radians(m_phi);

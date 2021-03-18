@@ -7,6 +7,7 @@
 #include "OBJMesh.h"
 #include "Camera.h"
 #include <vector>
+#include "Scene.h"
 
 
 class GraphicsProjectApp : public aie::Application {
@@ -21,13 +22,12 @@ public:
 	virtual void update(float deltaTime);
 	virtual void draw();
 
-	void DrawPlanets();
 
 protected:
 	
 	
-	std::vector<Camera> m_camera;
-	int m_currentCam = 0;
+	std::vector<Camera*> m_camera;
+	//int m_currentCam = 0;
 
 	// camera transforms
 	glm::mat4	m_viewMatrix;
@@ -43,8 +43,6 @@ protected:
 	aie::ShaderProgram m_normalMapShader;
 
 
-
-	//
 	//Basic Plane
 	Mesh m_quadMesh;
 	glm::mat4 m_quadTransform;
@@ -80,19 +78,12 @@ protected:
 	aie::OBJMesh m_coltMesh;
 	glm::mat4 m_coltTransform;
 
+	Scene* m_scene;
 
-	struct Light
-	{
-		glm::vec3 direction{2.f,4.2f,-10.f};
-		glm::vec3 color{ 0.5f,0.5f,0.5f };
-	};
-
-	Light		m_light;
-	Light		m_light1;
 	glm::vec3	m_ambientLight;
 
 public:
-	bool LoadShaderAndMeshLogic();
-	void DrawShaderAndMeshes(glm::mat4, glm::mat4);
+	bool LoadShaderAndMeshLogic(Light a_light);
+	//void DrawShaderAndMeshes(glm::mat4, glm::mat4);
 	void IMGUI_Logic();
 };
