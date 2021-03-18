@@ -61,9 +61,6 @@ void main()
     //calculate the diffuse lighting from the sunlight 
     vec3 diffuseTotal = diffuse(L,LightColor, N);
  
-    // Now we can calculate the lambert term, negative the light direction
-    // float lambertTerm = max(0, min(1, dot(N,-L)));
- 
     //Calculate the view vector and the reflection vector
     vec3 V = normalize(CameraPosition - vPosition.xyz);
     vec3 R = reflect(L,N);

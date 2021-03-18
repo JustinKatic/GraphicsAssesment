@@ -27,7 +27,10 @@ protected:
 	
 	
 	std::vector<Camera*> m_camera;
-	//int m_currentCam = 0;
+
+	float m_directionalRotSpeed = 2;
+	float m_directionalOrbitRadius = 1;
+	glm::vec3 m_directionalLightPos = glm::vec3(0);
 
 	// camera transforms
 	glm::mat4	m_viewMatrix;
