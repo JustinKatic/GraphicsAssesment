@@ -35,17 +35,23 @@ public:
 	void AddInstance(Instance* a_instance);
 	void Draw();
 
+
+
 	int currentCam = 0;
 	Camera* GetCurrentCamera() { return m_camera[currentCam]; }
 	glm::vec2 GetWindowSize() { return m_windowSize; }
 	Light& GetLight() { return m_light; }
 	glm::vec3 GetAmbientLight() { return m_ambientLight; }
+	glm::vec3 SetAmbientLight(glm::vec3 a_ambientLight) {return m_ambientLight = a_ambientLight; }
+
 
 	int GetNumLights() { return (int)m_pointLights.size(); }
 	glm::vec3* GetPointLightPositions() { return &m_pointLightPositions[0]; }
 	glm::vec3* GetPointLightColors() { return &m_pointLightColors[0]; }
 
 	std::vector<Light>& GetPointLights() { return m_pointLights; }
+
+
 
 
 	std::vector<Instance*>	m_instances;

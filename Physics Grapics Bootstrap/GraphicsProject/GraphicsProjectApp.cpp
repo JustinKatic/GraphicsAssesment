@@ -8,12 +8,13 @@
 #include "Scene.h"
 #include "Instance.h"
 
+
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 using aie::Gizmos;
 
-GraphicsProjectApp::GraphicsProjectApp() : m_ambientLight(), m_bunnyTransform(), m_dragonTransform(), m_lucyTransform(), m_buddhaTransform(), m_projectionMatrix(), m_quadTransform(), m_viewMatrix()
+GraphicsProjectApp::GraphicsProjectApp() : m_bunnyTransform(), m_dragonTransform(), m_lucyTransform(), m_buddhaTransform(), m_projectionMatrix(), m_quadTransform(), m_viewMatrix()
 {
 }
 
@@ -21,7 +22,8 @@ GraphicsProjectApp::~GraphicsProjectApp()
 {
 }
 
-bool GraphicsProjectApp::startup() {
+bool GraphicsProjectApp::startup()
+{
 
 	setBackgroundColour(0.25f, 0.25f, 0.25f);
 
@@ -32,10 +34,60 @@ bool GraphicsProjectApp::startup() {
 	light.m_color = { 1,1,1 };
 	light.m_direction = { 1,-1,1 };
 
+
+	//WHITE LEG lerp positions
+	LegLerpPositions(0, m_whiteLegHipFrames, m_whiteLegKneeFrames, m_whiteLegAnkleFrames,
+		glm::vec3(0, 5, 0), glm::vec3(1, 0, 0),			// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+
+	LegLerpPositions(1, m_whiteLegHipFrames, m_whiteLegKneeFrames, m_whiteLegAnkleFrames,
+		glm::vec3(0, 5, 0), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+
+
+	//BLUE LEG lerp positions
+	LegLerpPositions(0, m_blueLegHipFrames, m_blueLegKneeFrames, m_blueLegAnkleFrames,
+		glm::vec3(5, 5, 0), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+
+	LegLerpPositions(1, m_blueLegHipFrames, m_blueLegKneeFrames, m_blueLegAnkleFrames,
+		glm::vec3(5, 5, 0), glm::vec3(1, 0, 0),			// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+
+
+	//LEFT LEG BACK lerp positions
+	LegLerpPositions(0, m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames,
+		glm::vec3(0, 5, -5), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+
+	LegLerpPositions(1, m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames,
+		glm::vec3(0, 5, -5), glm::vec3(1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+
+
+	//RIGHT LEG BACK lerp positions
+	LegLerpPositions(0, m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames,
+		glm::vec3(5, 5, -5), glm::vec3(1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+
+	LegLerpPositions(1, m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames,
+		glm::vec3(5, 5, -5), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
+		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+
+
 	return LoadShaderAndMeshLogic(light);
 }
 
-void GraphicsProjectApp::shutdown() {
+void GraphicsProjectApp::shutdown()
+{
 
 	Gizmos::destroy();
 	delete m_scene;
@@ -43,7 +95,6 @@ void GraphicsProjectApp::shutdown() {
 
 void GraphicsProjectApp::update(float deltaTime)
 {
-
 	aie::Input* input = aie::Input::getInstance();
 
 	// wipe the gizmos clean for this frame
@@ -60,12 +111,14 @@ void GraphicsProjectApp::update(float deltaTime)
 			vec3(-10, 0, -10 + i),
 			i == 10 ? white : black);
 	}
+	m_scene->SetAmbientLight(m_ambientLight);
 
 	// add a transform so that we can see the axis
 	Gizmos::addTransform(mat4(1));
 
 	//make all camera but 1st cam static
-	if (m_scene->currentCam == 0)
+
+	if (m_scene->GetCurrentCamera()->m_isStatic == false)
 		m_scene->GetCurrentCamera()->Update(deltaTime);
 
 	//load imgui things
@@ -83,6 +136,17 @@ void GraphicsProjectApp::update(float deltaTime)
 	//gizmo for point light 2
 	Gizmos::addSphere(m_scene->GetPointLightPositions()[1], 0.25, 8, 8, glm::vec4(m_scene->GetPointLights()[1].m_color, 1));
 
+	//LeftFrontLegLogic();
+	AddLeg(m_whiteLegHipFrames, m_whiteLegKneeFrames, m_whiteLegAnkleFrames, m_whiteLegHipBone, m_whiteLegKneeBone, m_whiteLegAnkleBone);
+
+	//RightFrontLegLogic();
+	AddLeg(m_blueLegHipFrames, m_blueLegKneeFrames, m_blueLegAnkleFrames, m_blueLegHipBone, m_blueLegKneeBone, m_blueLegAnkleBone);
+
+	//LeftBackLegLogic();
+	AddLeg(m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames, m_greenLegHipBone, m_greenLegKneeBone, m_greenLegAnkleBone);
+
+	//RightBackLegLogic();
+	AddLeg(m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames, m_redLegHipBone, m_redLegKneeBone, m_redLegAnkleBone);
 
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
 		quit();
@@ -100,7 +164,89 @@ void GraphicsProjectApp::draw()
 	// DrawShaderAndMeshes(projectionMatrix, viewMatrix);
 	m_scene->Draw();
 
+	//white Leg front
+	DrawLegs(m_whiteLegHipBone, m_whiteLegKneeBone, m_whiteLegAnkleBone, glm::vec4(1, 1, 1, 1));
+	//right leg front
+	DrawLegs(m_blueLegHipBone, m_blueLegKneeBone, m_blueLegAnkleBone, glm::vec4(0, 0, 1, 1));
+	//left leg back
+	DrawLegs(m_greenLegHipBone, m_greenLegKneeBone, m_greenLegAnkleBone, glm::vec4(0, 1, 0, 1));
+	//right leg back
+	DrawLegs(m_redLegHipBone, m_redLegKneeBone, m_redLegAnkleBone, glm::vec4(1, 0, 0, 1));
+
+
+
 	Gizmos::draw(projectionMatrix * viewMatrix);
+}
+
+
+void GraphicsProjectApp::DrawLegs(glm::mat4 a_hipBone, glm::mat4 a_kneeBone, glm::mat4 a_ankleBone, glm::vec4 a_color)
+{
+	//draw hip
+	glm::vec3 hipPos = glm::vec3(a_hipBone[3].x, a_hipBone[3].y, a_hipBone[3].z);
+	//draw knee
+	glm::vec3 kneePos = glm::vec3(a_kneeBone[3].x, a_kneeBone[3].y, a_kneeBone[3].z);
+	//draw ankle
+	glm::vec3 anklePos = glm::vec3(a_ankleBone[3].x, a_ankleBone[3].y, a_ankleBone[3].z);
+
+	//get centre pos
+	glm::vec4 centre(0.5f);
+	//color of square
+
+
+	//draw hip
+	Gizmos::addAABBFilled(hipPos, centre, a_color, &a_hipBone);
+	//draw knee
+	Gizmos::addAABBFilled(kneePos, centre, a_color, &a_kneeBone);
+	//draw ankle
+	Gizmos::addAABBFilled(anklePos, centre, a_color, &a_ankleBone);
+
+	Gizmos::addAABBFilled(glm::vec3(5, 15, 0), glm::vec4(5.0f), glm::vec4(1, 0, 0, 1));
+
+}
+
+void GraphicsProjectApp::LegLerpPositions(int a_Index, KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame,
+	glm::vec3 a_hipPos, glm::quat a_hipRot, glm::vec3 a_kneePos, glm::quat a_kneeRot, glm::vec3 a_anklePos, glm::quat a_ankleRot)
+{
+	a_hipFrame[a_Index].position = a_hipPos;
+	a_hipFrame[a_Index].rotation = a_hipRot;
+
+	a_kneeFrame[a_Index].position = a_kneePos;
+	a_kneeFrame[a_Index].rotation = a_kneeRot;
+
+	a_ankleFrame[a_Index].position = a_anklePos;
+	a_ankleFrame[a_Index].rotation = a_ankleRot;
+}
+
+
+
+void GraphicsProjectApp::AddLeg(KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame, glm::mat4& a_hipBone, glm::mat4& a_kneeBone, glm::mat4& a_ankleBone)
+{
+	// ANIMATE HIP
+	float sHip = glm::cos(getTime()) * 0.5f + 0.5f;
+	// linearly interpolate hip position
+	glm::vec3 pHip = (1.0f - sHip) * a_hipFrame[0].position + sHip * a_hipFrame[1].position;
+	// spherically interpolate hip rotation
+	glm::quat rHip = glm::slerp(a_hipFrame[0].rotation, a_hipFrame[1].rotation, sHip);
+	// update the hip bone
+	a_hipBone = glm::translate(pHip) * glm::toMat4(rHip);
+
+	// ANIMATE Knee
+	float sKnee = glm::cos(getTime()) * 0.5f + 0.5f;
+	// linearly interpolate hip position
+	glm::vec3 pKnee = (1.0f - sKnee) * a_kneeFrame[0].position + sKnee * a_kneeFrame[1].position;
+	// spherically interpolate hip rotation
+	glm::quat rKnee = glm::slerp(a_kneeFrame[0].rotation, a_kneeFrame[1].rotation, sKnee);
+	// update the hip bone
+	a_kneeBone = a_hipBone * glm::translate(pKnee) * glm::toMat4(rKnee);
+
+	// ANIMATE Ankle
+	float sAnkle = glm::cos(getTime()) * 0.5f + 0.5f;
+	// linearly interpolate hip position
+	glm::vec3 pAnkle = (1.0f - sAnkle) * a_ankleFrame[0].position + sAnkle * a_ankleFrame[1].position;
+	// spherically interpolate hip rotation
+	glm::quat rAnkle = glm::slerp(a_ankleFrame[0].rotation, a_ankleFrame[1].rotation, sAnkle);
+	// update the hip bone
+	a_ankleBone = a_kneeBone * glm::translate(pAnkle) * glm::toMat4(rAnkle);
 }
 
 bool GraphicsProjectApp::LoadShaderAndMeshLogic(Light a_light)
@@ -160,13 +306,15 @@ bool GraphicsProjectApp::LoadShaderAndMeshLogic(Light a_light)
 #pragma region AddInstances
 
 	//push back cameras
-	m_camera.push_back(new Camera(glm::vec3(-5, 0, 0))); // FLY CAM
-	m_camera.push_back(new Camera(glm::vec3(0, 0, 0)));  //static 1
-	m_camera.push_back(new Camera(glm::vec3(5, 0, 0)));  //static 2
-	m_camera.push_back(new Camera(glm::vec3(0, 10, 0))); //static 3
+	m_camera.push_back(new Camera(false, glm::vec3(0, 0, 0))); // FLY CAM
+	m_camera.push_back(new Camera(true, glm::vec3(10, 0, 0)));  //static 1 looking down
+	m_camera.push_back(new Camera(true, glm::vec3(0, 10, 0)));  //static 2 looking forward
+	m_camera.push_back(new Camera(true, glm::vec3(0, 0, 10))); //static 3 looking up
 
 
-	//creat an instance of scene
+
+
+		//creat an instance of scene
 	m_scene = new Scene(m_camera, glm::vec2(getWindowWidth(), getWindowHeight()), a_light, glm::vec3(0.25f));
 
 
@@ -209,6 +357,10 @@ void GraphicsProjectApp::IMGUI_Logic()
 	ImGui::DragFloat3("Light1 Color", &m_scene->GetPointLights()[0].m_color[0], 0.1, 0.0f, 2.0f);
 	ImGui::DragFloat3("Light2 Position", &m_scene->GetPointLights()[1].m_direction[0], 0.1, -50, 50.0f);
 	ImGui::DragFloat3("Light2 Color", &m_scene->GetPointLights()[1].m_color[0], 0.1, 0.0f, 2.0f);
+
+	ImGui::DragFloat3("Ambient Light Color", &m_ambientLight[0], 0.1, 0.0f, 2.0f);
+
+
 	ImGui::End();
 #pragma endregion
 

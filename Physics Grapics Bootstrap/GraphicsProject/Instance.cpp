@@ -55,8 +55,8 @@ void Instance::Draw(Scene* a_scene)
 glm::mat4 Instance::MakeTransform(glm::vec3 a_position, glm::vec3 a_eulerAngles, glm::vec3 a_scale)
 {
 	return glm::translate(glm::mat4(1), a_position)
-		* glm::rotate(glm::mat4(1), glm::radians(a_eulerAngles.x), glm::vec3(0, 0, 1))
+		* glm::rotate(glm::mat4(1), glm::radians(a_eulerAngles.z), glm::vec3(0, 0, 1))
 		* glm::rotate(glm::mat4(1), glm::radians(a_eulerAngles.y), glm::vec3(0, 1, 0))
-		* glm::rotate(glm::mat4(1), glm::radians(a_eulerAngles.z), glm::vec3(1, 0, 0))
+		* glm::rotate(glm::mat4(1), glm::radians(a_eulerAngles.x), glm::vec3(1, 0, 0))
 		* glm::scale(glm::mat4(1), a_scale);
 }

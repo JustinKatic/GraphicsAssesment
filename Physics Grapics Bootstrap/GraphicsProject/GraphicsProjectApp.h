@@ -9,6 +9,11 @@
 #include <vector>
 #include "Scene.h"
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include<glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
+
 
 class GraphicsProjectApp : public aie::Application {
 public:
@@ -23,9 +28,59 @@ public:
 	virtual void draw();
 
 
+	void DrawLegs(glm::mat4 a_hipBone, glm::mat4 a_kneeBone, glm::mat4 a_ankleBone, glm::vec4 a_color);
+
+
 protected:
-	
-	
+
+	//Quaternion things
+	glm::vec3 m_positions[2];
+	glm::quat m_rotations[2];
+
+	struct KeyFrame
+	{
+		glm::vec3 position;
+		glm::quat rotation;
+	};
+
+	//White LEG FRONT
+	KeyFrame  m_whiteLegHipFrames[2];
+	KeyFrame  m_whiteLegKneeFrames[2];
+	KeyFrame  m_whiteLegAnkleFrames[2];
+	glm::mat4 m_whiteLegHipBone;
+	glm::mat4 m_whiteLegKneeBone;
+	glm::mat4 m_whiteLegAnkleBone;
+
+	//Blue LEG FRONT
+	KeyFrame  m_blueLegHipFrames[2];
+	KeyFrame  m_blueLegKneeFrames[2];
+	KeyFrame  m_blueLegAnkleFrames[2];
+	glm::mat4 m_blueLegHipBone;
+	glm::mat4 m_blueLegKneeBone;
+	glm::mat4 m_blueLegAnkleBone;
+
+	//Green LEG BACK
+	KeyFrame  m_greenLegHipFrames[2];
+	KeyFrame  m_greenLegKneeFrames[2];
+	KeyFrame  m_greenLegAnkleFrames[2];
+	glm::mat4 m_greenLegHipBone;
+	glm::mat4 m_greenLegKneeBone;
+	glm::mat4 m_greenLegAnkleBone;
+
+	//RIGHT LEG BACK
+	KeyFrame  m_redLegHipFrames[2];
+	KeyFrame  m_redLegKneeFrames[2];
+	KeyFrame  m_redLegAnkleFrames[2];
+	glm::mat4 m_redLegHipBone;
+	glm::mat4 m_redLegKneeBone;
+	glm::mat4 m_redLegAnkleBone;
+
+	void AddLeg(KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame, glm::mat4& a_hipBone, glm::mat4& a_kneeBone, glm::mat4& a_ankleBone);
+
+	void LegLerpPositions(int a_Index, KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame,
+		glm::vec3 a_hipPos, glm::quat a_hipRot, glm::vec3 a_kneePos, glm::quat a_kneeRot, glm::vec3 a_anklePos, glm::quat a_ankleRot);
+
+
 	std::vector<Camera*> m_camera;
 
 	float m_directionalRotSpeed = 2;
@@ -49,7 +104,7 @@ protected:
 	//Basic Plane
 	Mesh m_quadMesh;
 	glm::mat4 m_quadTransform;
-	
+
 
 	//Create a bunny with a flat color
 	aie::OBJMesh m_bunnyMesh;
@@ -83,7 +138,7 @@ protected:
 
 	Scene* m_scene;
 
-	glm::vec3	m_ambientLight;
+	glm::vec3	m_ambientLight = glm::vec3(0.25f);
 
 public:
 	bool LoadShaderAndMeshLogic(Light a_light);

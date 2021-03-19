@@ -32,3 +32,5 @@ void Scene::Draw()
 		instance->Draw(this);
 	}
 }
+
+

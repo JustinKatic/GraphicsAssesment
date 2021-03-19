@@ -2,15 +2,16 @@
 #include <glm/ext.hpp>
 #include <Input.h>
 
-Camera::Camera(glm::vec3 a_camPos)
+Camera::Camera(bool a_isStaic, glm::vec3 a_camPos)
 {
+	m_isStatic = a_isStaic;
 	m_position = a_camPos;
 	m_phi = 0;
 	m_theta = 0;
 }
 
 void Camera::Update(float a_deltaTime)
-{	
+{
 	aie::Input* input = aie::Input::getInstance();
 	float thetaR = glm::radians(m_theta);
 	float phiR = glm::radians(m_phi);
@@ -73,8 +74,12 @@ glm::mat4 Camera::GetViewMatrix()
 	glm::vec3 forward(glm::cos(phiR) * glm::cos(thetaR), glm::sin(phiR), glm::cos(phiR) * glm::sin(thetaR));
 
 
+	//if not static allow cam to move else cam cant move
+	if (!m_isStatic)
+		return glm::lookAt(m_position, m_position + forward, glm::vec3(0, 1, 0));
+	else 
+		return glm::lookAt(m_position, glm::vec3(0) + forward, glm::vec3(0, 1, 0));
 
-	return glm::lookAt(m_position, m_position + forward, glm::vec3(0, 1, 0));
 }
 
 glm::mat4 Camera::GetProjectionMatrix(float a_width, float a_height)
