@@ -4,6 +4,8 @@
 
 Camera::Camera(bool a_isStaic, glm::vec3 a_camPos)
 {
+	m_lastMouseX = 0;
+	m_lastMouseY = 0;
 	m_isStatic = a_isStaic;
 	m_position = a_camPos;
 	m_phi = 0;

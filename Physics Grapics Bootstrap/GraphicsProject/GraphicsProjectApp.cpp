@@ -14,7 +14,7 @@ using glm::vec4;
 using glm::mat4;
 using aie::Gizmos;
 
-GraphicsProjectApp::GraphicsProjectApp() : m_bunnyTransform(), m_dragonTransform(), m_lucyTransform(), m_buddhaTransform(), m_projectionMatrix(), m_quadTransform(), m_viewMatrix()
+GraphicsProjectApp::GraphicsProjectApp() : m_dragonTransform(), m_projectionMatrix(), m_viewMatrix()
 {
 }
 
@@ -30,11 +30,12 @@ bool GraphicsProjectApp::startup()
 	// initialise gizmo primitive counts
 	Gizmos::create(10000, 10000, 10000, 10000);
 
+	//create direction light
 	Light light;
 	light.m_color = { 1,1,1 };
 	light.m_direction = { 1,-1,1 };
 
-
+#pragma region White Leg Lerp Posistions
 	//WHITE LEG lerp positions
 	LegLerpPositions(0, m_whiteLegHipFrames, m_whiteLegKneeFrames, m_whiteLegAnkleFrames,
 		glm::vec3(0, 5, 0), glm::vec3(1, 0, 0),			// hip pos, hip rot
@@ -45,8 +46,9 @@ bool GraphicsProjectApp::startup()
 		glm::vec3(0, 5, 0), glm::vec3(-1, 0, 0),		// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+#pragma endregion
 
-
+#pragma region Blue Leg Lerp Posistions
 	//BLUE LEG lerp positions
 	LegLerpPositions(0, m_blueLegHipFrames, m_blueLegKneeFrames, m_blueLegAnkleFrames,
 		glm::vec3(5, 5, 0), glm::vec3(-1, 0, 0),		// hip pos, hip rot
@@ -57,32 +59,35 @@ bool GraphicsProjectApp::startup()
 		glm::vec3(5, 5, 0), glm::vec3(1, 0, 0),			// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+#pragma endregion
 
-
+#pragma region Green Leg Lerp Posistions
 	//LEFT LEG BACK lerp positions
 	LegLerpPositions(0, m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames,
-		glm::vec3(0, 5, -5), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, 5, -10), glm::vec3(-1, 0, 0),		// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
 
 	LegLerpPositions(1, m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames,
-		glm::vec3(0, 5, -5), glm::vec3(1, 0, 0),		// hip pos, hip rot
+		glm::vec3(0, 5, -10), glm::vec3(1, 0, 0),		// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
+#pragma endregion
 
-
+#pragma region Red Leg Lerp Posistions
 	//RIGHT LEG BACK lerp positions
 	LegLerpPositions(0, m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames,
-		glm::vec3(5, 5, -5), glm::vec3(1, 0, 0),		// hip pos, hip rot
+		glm::vec3(5, 5, -10), glm::vec3(1, 0, 0),		// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(1, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(-1, 0, 0));	// ankle pos, ankle rot
 
 	LegLerpPositions(1, m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames,
-		glm::vec3(5, 5, -5), glm::vec3(-1, 0, 0),		// hip pos, hip rot
+		glm::vec3(5, 5, -10), glm::vec3(-1, 0, 0),		// hip pos, hip rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0),		// knee pos, knee rot
 		glm::vec3(0, -2.5f, 0), glm::vec3(0, 0, 0));	// ankle pos, ankle rot
+#pragma endregion
 
-
+	//load shader mesh logic function
 	return LoadShaderAndMeshLogic(light);
 }
 
@@ -100,7 +105,7 @@ void GraphicsProjectApp::update(float deltaTime)
 	// wipe the gizmos clean for this frame
 	Gizmos::clear();
 
-	// draw a simple grid with gizmos
+	// draws a simple grid with gizmos
 	vec4 white(1);
 	vec4 black(0, 0, 0, 1);
 	for (int i = 0; i < 21; ++i) {
@@ -111,13 +116,10 @@ void GraphicsProjectApp::update(float deltaTime)
 			vec3(-10, 0, -10 + i),
 			i == 10 ? white : black);
 	}
+	//create ambient light
 	m_scene->SetAmbientLight(m_ambientLight);
 
-	// add a transform so that we can see the axis
-	Gizmos::addTransform(mat4(1));
-
-	//make all camera but 1st cam static
-
+	//if current cam is not static allow cam to move
 	if (m_scene->GetCurrentCamera()->m_isStatic == false)
 		m_scene->GetCurrentCamera()->Update(deltaTime);
 
@@ -128,7 +130,7 @@ void GraphicsProjectApp::update(float deltaTime)
 	float time = getTime();
 	m_scene->GetLight().m_direction = glm::normalize(glm::vec3(glm::cos(time * m_directionalRotSpeed), glm::sin(time * m_directionalRotSpeed), 0)) + m_directionalLightPos;
 
-	//Gizmo directional light
+	//gizmo for directional light
 	Gizmos::addSphere(m_directionalOrbitRadius * m_scene->GetLight().m_direction, 0.25, 8, 8, glm::vec4(m_scene->GetLight().m_color, 1));
 
 	//gizmo for point light 1
@@ -136,16 +138,16 @@ void GraphicsProjectApp::update(float deltaTime)
 	//gizmo for point light 2
 	Gizmos::addSphere(m_scene->GetPointLightPositions()[1], 0.25, 8, 8, glm::vec4(m_scene->GetPointLights()[1].m_color, 1));
 
-	//LeftFrontLegLogic();
+	//whiteLegLogic();
 	AddLeg(m_whiteLegHipFrames, m_whiteLegKneeFrames, m_whiteLegAnkleFrames, m_whiteLegHipBone, m_whiteLegKneeBone, m_whiteLegAnkleBone);
 
-	//RightFrontLegLogic();
+	//blueLegLogic();
 	AddLeg(m_blueLegHipFrames, m_blueLegKneeFrames, m_blueLegAnkleFrames, m_blueLegHipBone, m_blueLegKneeBone, m_blueLegAnkleBone);
 
-	//LeftBackLegLogic();
+	//greenLegLogic();
 	AddLeg(m_greenLegHipFrames, m_greenLegKneeFrames, m_greenLegAnkleFrames, m_greenLegHipBone, m_greenLegKneeBone, m_greenLegAnkleBone);
 
-	//RightBackLegLogic();
+	//redLegLogic();
 	AddLeg(m_redLegHipFrames, m_redLegKneeFrames, m_redLegAnkleFrames, m_redLegHipBone, m_redLegKneeBone, m_redLegAnkleBone);
 
 	if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
@@ -164,14 +166,15 @@ void GraphicsProjectApp::draw()
 	// DrawShaderAndMeshes(projectionMatrix, viewMatrix);
 	m_scene->Draw();
 
-	//white Leg front
+	//Draw white leg
 	DrawLegs(m_whiteLegHipBone, m_whiteLegKneeBone, m_whiteLegAnkleBone, glm::vec4(1, 1, 1, 1));
-	//right leg front
+	//Draw blue leg
 	DrawLegs(m_blueLegHipBone, m_blueLegKneeBone, m_blueLegAnkleBone, glm::vec4(0, 0, 1, 1));
-	//left leg back
+	//Draw green leg
 	DrawLegs(m_greenLegHipBone, m_greenLegKneeBone, m_greenLegAnkleBone, glm::vec4(0, 1, 0, 1));
-	//right leg back
+	//Draw red leg
 	DrawLegs(m_redLegHipBone, m_redLegKneeBone, m_redLegAnkleBone, glm::vec4(1, 0, 0, 1));
+
 
 
 
@@ -190,8 +193,6 @@ void GraphicsProjectApp::DrawLegs(glm::mat4 a_hipBone, glm::mat4 a_kneeBone, glm
 
 	//get centre pos
 	glm::vec4 centre(0.5f);
-	//color of square
-
 
 	//draw hip
 	Gizmos::addAABBFilled(hipPos, centre, a_color, &a_hipBone);
@@ -200,7 +201,13 @@ void GraphicsProjectApp::DrawLegs(glm::mat4 a_hipBone, glm::mat4 a_kneeBone, glm
 	//draw ankle
 	Gizmos::addAABBFilled(anklePos, centre, a_color, &a_ankleBone);
 
-	Gizmos::addAABBFilled(glm::vec3(5, 15, 0), glm::vec4(5.0f), glm::vec4(1, 0, 0, 1));
+	Gizmos::addAABBFilled(glm::vec3(5, 13, -10), glm::vec3(5, 2, 10), glm::vec4(1, 0, 0, 1));
+
+
+	Gizmos::addLine(hipPos*2, kneePos*2, a_color);
+	Gizmos::addLine(kneePos*2, anklePos*2, a_color);
+
+
 
 }
 
@@ -307,16 +314,15 @@ bool GraphicsProjectApp::LoadShaderAndMeshLogic(Light a_light)
 
 	//push back cameras
 	m_camera.push_back(new Camera(false, glm::vec3(0, 0, 0))); // FLY CAM
-	m_camera.push_back(new Camera(true, glm::vec3(10, 0, 0)));  //static 1 looking down
-	m_camera.push_back(new Camera(true, glm::vec3(0, 10, 0)));  //static 2 looking forward
-	m_camera.push_back(new Camera(true, glm::vec3(0, 0, 10))); //static 3 looking up
+	m_camera.push_back(new Camera(true, glm::vec3(30, 0, 0)));  //static 1 looking down
+	m_camera.push_back(new Camera(true, glm::vec3(0, 30, 0)));  //static 2 looking forward
+	m_camera.push_back(new Camera(true, glm::vec3(0, 0, 30))); //static 3 looking up
 
 
 
 
-		//creat an instance of scene
+	//creat an instance of scene
 	m_scene = new Scene(m_camera, glm::vec2(getWindowWidth(), getWindowHeight()), a_light, glm::vec3(0.25f));
-
 
 	//ADD COLT [0]
 	m_scene->AddInstance(new Instance(glm::vec3(5, 0, 0), glm::vec3(0, 30, 0), glm::vec3(0.01), &m_coltMesh, &m_normalMapShader));
@@ -357,13 +363,9 @@ void GraphicsProjectApp::IMGUI_Logic()
 	ImGui::DragFloat3("Light1 Color", &m_scene->GetPointLights()[0].m_color[0], 0.1, 0.0f, 2.0f);
 	ImGui::DragFloat3("Light2 Position", &m_scene->GetPointLights()[1].m_direction[0], 0.1, -50, 50.0f);
 	ImGui::DragFloat3("Light2 Color", &m_scene->GetPointLights()[1].m_color[0], 0.1, 0.0f, 2.0f);
-
 	ImGui::DragFloat3("Ambient Light Color", &m_ambientLight[0], 0.1, 0.0f, 2.0f);
-
-
 	ImGui::End();
 #pragma endregion
-
 
 	//COLT TRANSFORM
 #pragma region ColtTransform

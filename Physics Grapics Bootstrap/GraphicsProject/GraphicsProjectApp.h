@@ -44,36 +44,36 @@ protected:
 	};
 
 	//White LEG FRONT
-	KeyFrame  m_whiteLegHipFrames[2];
-	KeyFrame  m_whiteLegKneeFrames[2];
-	KeyFrame  m_whiteLegAnkleFrames[2];
-	glm::mat4 m_whiteLegHipBone;
-	glm::mat4 m_whiteLegKneeBone;
-	glm::mat4 m_whiteLegAnkleBone;
+	KeyFrame  m_whiteLegHipFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_whiteLegKneeFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_whiteLegAnkleFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	glm::mat4 m_whiteLegHipBone = glm::mat4();
+	glm::mat4 m_whiteLegKneeBone = glm::mat4();
+	glm::mat4 m_whiteLegAnkleBone = glm::mat4();
 
 	//Blue LEG FRONT
-	KeyFrame  m_blueLegHipFrames[2];
-	KeyFrame  m_blueLegKneeFrames[2];
-	KeyFrame  m_blueLegAnkleFrames[2];
-	glm::mat4 m_blueLegHipBone;
-	glm::mat4 m_blueLegKneeBone;
-	glm::mat4 m_blueLegAnkleBone;
+	KeyFrame  m_blueLegHipFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_blueLegKneeFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_blueLegAnkleFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	glm::mat4 m_blueLegHipBone = glm::mat4();
+	glm::mat4 m_blueLegKneeBone = glm::mat4();
+	glm::mat4 m_blueLegAnkleBone = glm::mat4();
 
 	//Green LEG BACK
-	KeyFrame  m_greenLegHipFrames[2];
-	KeyFrame  m_greenLegKneeFrames[2];
-	KeyFrame  m_greenLegAnkleFrames[2];
-	glm::mat4 m_greenLegHipBone;
-	glm::mat4 m_greenLegKneeBone;
-	glm::mat4 m_greenLegAnkleBone;
+	KeyFrame  m_greenLegHipFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_greenLegKneeFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_greenLegAnkleFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	glm::mat4 m_greenLegHipBone = glm::mat4();
+	glm::mat4 m_greenLegKneeBone = glm::mat4();
+	glm::mat4 m_greenLegAnkleBone = glm::mat4();
 
 	//RIGHT LEG BACK
-	KeyFrame  m_redLegHipFrames[2];
-	KeyFrame  m_redLegKneeFrames[2];
-	KeyFrame  m_redLegAnkleFrames[2];
-	glm::mat4 m_redLegHipBone;
-	glm::mat4 m_redLegKneeBone;
-	glm::mat4 m_redLegAnkleBone;
+	KeyFrame  m_redLegHipFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_redLegKneeFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	KeyFrame  m_redLegAnkleFrames[2] = { glm::vec3(0),glm::vec3(0) };
+	glm::mat4 m_redLegHipBone = glm::mat4();
+	glm::mat4 m_redLegKneeBone = glm::mat4();
+	glm::mat4 m_redLegAnkleBone = glm::mat4();
 
 	void AddLeg(KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame, glm::mat4& a_hipBone, glm::mat4& a_kneeBone, glm::mat4& a_ankleBone);
 
@@ -93,40 +93,13 @@ protected:
 
 	aie::Texture m_gridTexture;
 
-	// SHADER
-	aie::ShaderProgram m_simpleShader;
-	aie::ShaderProgram m_bunnyShader;
+	// SHADERs
 	aie::ShaderProgram m_phongShader;
-	aie::ShaderProgram m_textureShader;
 	aie::ShaderProgram m_normalMapShader;
-
-
-	//Basic Plane
-	Mesh m_quadMesh;
-	glm::mat4 m_quadTransform;
-
-
-	//Create a bunny with a flat color
-	aie::OBJMesh m_bunnyMesh;
-	glm::mat4 m_bunnyTransform;
-	//glm::vec3 m_bunnyPosition{ 0,0,0 };
 
 	//Create a dragon with a flat color
 	aie::OBJMesh m_dragonMesh;
 	glm::mat4 m_dragonTransform;
-	//glm::vec3 m_dragonPosition{ 0,0,0 };
-
-
-	//Create a lucy with a flat color
-	aie::OBJMesh m_lucyMesh;
-	glm::mat4 m_lucyTransform;
-	//glm::vec3 m_lucyPosition{ 0,0,0 };
-
-
-	//Create a buddha with a flat color
-	aie::OBJMesh m_buddhaMesh;
-	glm::mat4 m_buddhaTransform;
-	//glm::vec3 m_buddhaPosition{ 0,0,0 };
 
 	//Create a soulspear
 	aie::OBJMesh m_soulSpearMesh;

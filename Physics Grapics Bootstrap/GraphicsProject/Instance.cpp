@@ -21,7 +21,8 @@ Instance::Instance(glm::vec3 a_position, glm::vec3 a_eulerAngles, glm::vec3 a_sc
 {
 	m_pos = a_position;
 	m_rot = a_eulerAngles;
-	m_scale = a_scale;	
+	m_scale = a_scale;
+	m_transform = glm::mat4(0);
 }
 
 void Instance::Draw(Scene* a_scene)
