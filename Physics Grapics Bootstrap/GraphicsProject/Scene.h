@@ -29,7 +29,7 @@ struct Light
 class Scene
 {
 public:
-	Scene(std::vector<Camera*> a_camera, glm::vec2 a_windowSize, Light& a_light, glm::vec3 a_ambientLight);
+	Scene(glm::vec2 a_windowSize, Light& a_light, glm::vec3 a_ambientLight);
 	~Scene();
 
 	void AddInstance(Instance* a_instance);

@@ -312,17 +312,18 @@ bool GraphicsProjectApp::LoadShaderAndMeshLogic(Light a_light)
 	//add instances of objects/lights to scene
 #pragma region AddInstances
 
-	//push back cameras
-	m_camera.push_back(new Camera(false, glm::vec3(0, 0, 0))); // FLY CAM
-	m_camera.push_back(new Camera(true, glm::vec3(30, 0, 0)));  //static 1 looking down
-	m_camera.push_back(new Camera(true, glm::vec3(0, 30, 0)));  //static 2 looking forward
-	m_camera.push_back(new Camera(true, glm::vec3(0, 0, 30))); //static 3 looking up
-
-
-
-
 	//creat an instance of scene
-	m_scene = new Scene(m_camera, glm::vec2(getWindowWidth(), getWindowHeight()), a_light, glm::vec3(0.25f));
+	m_scene = new Scene(glm::vec2(getWindowWidth(), getWindowHeight()), a_light, glm::vec3(0.25f));
+
+	//push back cameras
+	m_scene->m_camera.push_back(new Camera(false, glm::vec3(0, 0, 0))); // FLY CAM
+	m_scene->m_camera.push_back(new Camera(true, glm::vec3(30, 0, 0)));  //static 1 looking down
+	m_scene->m_camera.push_back(new Camera(true, glm::vec3(0, 30, 0)));  //static 2 looking forward
+	m_scene->m_camera.push_back(new Camera(true, glm::vec3(0, 0, 30))); //static 3 looking up
+
+
+
+
 
 	//ADD COLT [0]
 	m_scene->AddInstance(new Instance(glm::vec3(5, 0, 0), glm::vec3(0, 30, 0), glm::vec3(0.01), &m_coltMesh, &m_normalMapShader));

@@ -80,9 +80,6 @@ protected:
 	void LegLerpPositions(int a_Index, KeyFrame* a_hipFrame, KeyFrame* a_kneeFrame, KeyFrame* a_ankleFrame,
 		glm::vec3 a_hipPos, glm::quat a_hipRot, glm::vec3 a_kneePos, glm::quat a_kneeRot, glm::vec3 a_anklePos, glm::quat a_ankleRot);
 
-
-	std::vector<Camera*> m_camera;
-
 	float m_directionalRotSpeed = 2;
 	float m_directionalOrbitRadius = 1;
 	glm::vec3 m_directionalLightPos = glm::vec3(0);
@@ -115,6 +112,5 @@ protected:
 
 public:
 	bool LoadShaderAndMeshLogic(Light a_light);
-	//void DrawShaderAndMeshes(glm::mat4, glm::mat4);
 	void IMGUI_Logic();
 };
